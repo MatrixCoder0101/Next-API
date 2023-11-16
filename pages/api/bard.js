@@ -1,4 +1,4 @@
-import { DiscussServiceClient } from "@google-cloud/dialogflow-discuss";
+import { DiscussServiceClient } from "@google-ai/generativelanguage";
 import { GoogleAuth } from "google-auth-library";
 
 export default async function handler(req, res) {

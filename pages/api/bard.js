@@ -1,14 +1,13 @@
 import { DiscussServiceClient } from "@google-cloud/dialogflow-discuss";
 import { GoogleAuth } from "google-auth-library";
-import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req, res) {
   const MODEL_NAME = "models/chat-bison-001";
   const API_KEY = "AIzaSyCdf0QI11bfqok5uX1UXuTvonUkeOF8ooM";
-  const query = req.query.query as string;
+  const query = req.query.query;
 
   if (!query) {
-    return res.status(400).json({ error: 'Query parameter "query" is required.' });
+    return res.status(400).json({ error: 'Give me a query.' });
   }
 
   const client = new DiscussServiceClient({

@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
     // Set content type and send the image
     res.setHeader('Content-Type', 'image/png');
-    res.status(200).sendFile(filePath);
+    res.send(filePath);
   } catch (error) {
     console.error('Error generating or serving welcome image:', error);
     res.status(500).json({ error: `Internal Server Error: ${error.message}` });

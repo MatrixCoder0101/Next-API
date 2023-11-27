@@ -43,7 +43,8 @@ export default async function handler(req, res) {
     res.status(200).sendFile(filePath);
   } catch (error) {
     console.error('Error generating welcome image:', error);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send(`Internal Server Error: ${error.message}`);
+
   } finally {
     // Delete downloaded images
     await fs.unlink(path.join(process.cwd(), 'public', 'guildIcon.jpg'));

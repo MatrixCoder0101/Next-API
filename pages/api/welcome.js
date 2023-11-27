@@ -1,62 +1,41 @@
-// Welcome API
+// pages/api/welcome-image.js
 
-import knights from 'knights-canvas';
-import axios from 'axios';
-import fs from 'fs';
+import { Welcome } from 'knights-canvas';
+import fs from 'fs/promises';
 import path from 'path';
 
-const downloadImage = async (url, filename) => {
-  const response = await axios.get(url, { responseType: 'arraybuffer' });
-  await fs.writeFile(filename, Buffer.from(response.data, 'binary'));
-};
+const __path = process.cwd(); // Assuming __path is defined elsewhere in your code
 
 export default async function handler(req, res) {
-  const username = req.query.username || 'MatrixCoder';
-  const guildName = req.query.guildName || 'Programmers';
-  const guildIcon = req.query.guildIcon || 'https://i.ibb.co/G5mJZxs/rin.jpg';
-  const memberCount = req.query.memberCount || '101';
-  const avatar = req.query.avatar || 'https://i.ibb.co/1s8T3sY/48f7ce63c7aa.jpg';
-  const background = req.query.background || 'https://i.ibb.co/4YBNyvP/images-76.jpg';
-
   try {
-    // Download images
-    await downloadImage(guildIcon, 'public/guildIcon.jpg');
-    await downloadImage(avatar, 'public/avatar.jpg');
-    await downloadImage(background, 'public/background.jpg');
+    const username = req.query.username || 'UNDEFINED';
+    const guildName = req.query.guildName || 'WIBU NOLEP';
+    const guildIcon = req.query.guildIcon || 'https://i.ibb.co/G5mJZxs/rin.jpg';
+    const memberCount = req.query.memberCount || '120';
+    const avatar = req.query.avatar || 'https://i.ibb.co/1s8T3sY/48f7ce63c7aa.jpg';
+    const background = req.query.background || 'https://i.ibb.co/4YBNyvP/images-76.jpg';
 
     // Generate welcome image
-    const image = await new knights.Welcome()
+    const image = await new Welcome()
       .setUsername(username)
       .setGuildName(guildName)
-      .setGuildIcon('/guildIcon.jpg') // Adjust the path based on your folder structure
+      .setGuildIcon(guildIcon)
       .setMemberCount(memberCount)
-      .setAvatar('/avatar.jpg') // Adjust the path based on your folder structure
-      .setBackground('/background.jpg') // Adjust the path based on your folder structure
+      .setAvatar(avatar)
+      .setBackground(background)
       .toAttachment();
 
     const data = image.toBuffer();
     const filename = `welcome-${username}.png`;
-    const filePath = path.join(process.cwd(), 'public', filename);
+    const filePath = path.join(__path, 'tmp', filename);
 
     await fs.writeFile(filePath, data);
 
-      // Read the image file into a buffer
-    const imageBuffer = await fs.readFile(filePath, data);
-
-    // Determine content type based on the file extension
-    const contentType = path.extname(filePath).slice(1);
-
-    // Set content type and send the buffer
-    res.setHeader('Content-Type', `image/${contentType}`);
-    res.send(imageBuffer, 'binary');
+    // Set content type and send the image
+    res.setHeader('Content-Type', 'image/png');
+    res.status(200).sendFile(filePath);
   } catch (error) {
-    console.error('Error generating welcome image:', error);
-    res.status(500).send(`Internal Server Error: ${error.message}`);
-
-  } finally {
-    // Delete downloaded images
-    await fs.unlink(path.join(process.cwd(), 'public', 'guildIcon.jpg'));
-    await fs.unlink(path.join(process.cwd(), 'public', 'avatar.jpg'));
-    await fs.unlink(path.join(process.cwd(), 'public', 'background.jpg'));
+    console.error('Error generating or serving welcome image:', error);
+    res.status(500).json({ error: `Internal Server Error: ${error.message}` });
   }
 }

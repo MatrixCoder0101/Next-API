@@ -1,6 +1,6 @@
 // Random Anime
 
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 
 const rootDirectory = process.cwd();

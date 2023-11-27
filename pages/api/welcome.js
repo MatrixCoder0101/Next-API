@@ -2,7 +2,7 @@
 
 import { Welcome } from 'knights-canvas';
 //import fs from 'fs/promises';
-import path from 'path';
+//import path from 'path';
 
 //const __path = process.cwd(); // Assuming __path is defined elsewhere in your code
 

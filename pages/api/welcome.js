@@ -40,7 +40,15 @@ export default async function handler(req, res) {
 
     await fs.writeFile(filePath, data);
 
-    res.status(200).sendFile(filePath);
+      // Read the image file into a buffer
+    const imageBuffer = await fs.readFile(filePath, data);
+
+    // Determine content type based on the file extension
+    const contentType = path.extname(filePath).slice(1);
+
+    // Set content type and send the buffer
+    res.setHeader('Content-Type', `image/${contentType}`);
+    res.send(imageBuffer, 'binary');
   } catch (error) {
     console.error('Error generating welcome image:', error);
     res.status(500).send(`Internal Server Error: ${error.message}`);

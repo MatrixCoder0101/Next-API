@@ -1,6 +1,6 @@
 // Random Anime
 
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 
 const rootDirectory = process.cwd();
@@ -30,7 +30,7 @@ async function getRandomImage(directory, directoryName) {
 
 export default async function handler(req, res) {
   try {
-    const randomFolder = Math.random() < 0.5 ? 'Cute' : 'Anime';
+    const randomFolder = Math.random() < 0.5 ? 'Anime' : 'Anime2';
     const randomDirectory = path.join(rootDirectory, 'public', randomFolder);
 
     const imagePath = await getRandomImage(randomDirectory, randomFolder);

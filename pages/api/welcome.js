@@ -1,4 +1,4 @@
-// pages/api/welcome-image.js
+// Welcome API
 
 import { Welcome } from 'knights-canvas';
 import fs from 'fs/promises';

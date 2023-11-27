@@ -43,7 +43,7 @@ export default async function handler(req, res) {
 
     // Set content type and send the buffer
     res.setHeader('Content-Type', `image/${contentType}`);
-    res.status(200).end(imageBuffer, 'binary');
+    res.send(imageBuffer, 'binary');
   } catch (error) {
     console.error('Error serving random image:', error);
     res.status(500).json({ error: `Internal Server Error: ${error.message}` });

@@ -1,10 +1,10 @@
 // Welcome API
 
 import { Welcome } from 'knights-canvas';
-import fs from 'fs/promises';
+//import fs from 'fs/promises';
 import path from 'path';
 
-const __path = process.cwd(); // Assuming __path is defined elsewhere in your code
+//const __path = process.cwd(); // Assuming __path is defined elsewhere in your code
 
 export default async function handler(req, res) {
   try {
@@ -26,14 +26,14 @@ export default async function handler(req, res) {
       .toAttachment();
 
     const data = image.toBuffer();
-    const filename = `welcome-${username}.png`;
-    const filePath = path.join(__path, 'tmp', filename);
+  //  const filename = `welcome-${username}.png`;
+  //  const filePath = path.join(__path, 'tmp', filename);
 
-    await fs.writeFile(filePath, data);
+  //  await fs.writeFile(filePath, data);
 
     // Set content type and send the image
     res.setHeader('Content-Type', 'image/png');
-    res.send(filePath);
+    res.send(data);
   } catch (error) {
     console.error('Error generating or serving welcome image:', error);
     res.status(500).json({ error: `Internal Server Error: ${error.message}` });

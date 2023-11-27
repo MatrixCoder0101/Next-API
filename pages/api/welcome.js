@@ -2,7 +2,7 @@
 
 import knights from 'knights-canvas';
 import axios from 'axios';
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 
 const downloadImage = async (url, filename) => {

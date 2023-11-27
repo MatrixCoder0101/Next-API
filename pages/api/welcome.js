@@ -1,10 +1,6 @@
 // Welcome API
 
-import { Welcome } from 'knights-canvas';
-//import fs from 'fs/promises';
-//import path from 'path';
-
-//const __path = process.cwd(); // Assuming __path is defined elsewhere in your code
+import knights from 'knights-canvas';
 
 export default async function handler(req, res) {
   try {
@@ -16,7 +12,7 @@ export default async function handler(req, res) {
     const background = req.query.background || 'https://i.ibb.co/4YBNyvP/images-76.jpg';
 
     // Generate welcome image
-    const image = await new Welcome()
+    const image = await new knights.Welcome()
       .setUsername(username)
       .setGuildName(guildName)
       .setGuildIcon(guildIcon)
@@ -26,10 +22,6 @@ export default async function handler(req, res) {
       .toAttachment();
 
     const data = image.toBuffer();
-  //  const filename = `welcome-${username}.png`;
-  //  const filePath = path.join(__path, 'tmp', filename);
-
-  //  await fs.writeFile(filePath, data);
 
     // Set content type and send the image
     res.setHeader('Content-Type', 'image/png');

@@ -28,19 +28,14 @@ async function getRandomImage(directory, directoryName) {
   }
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   try {
-    const randomFolder = Math.random() < 0.5 ? 'Anime' : 'Anime';
+    const randomFolder = Math.random() < 0.5 ? 'Cute' : 'Anime';
     const randomDirectory = path.join(rootDirectory, 'public', randomFolder);
 
-    getRandomImage(randomDirectory, randomFolder, (err, imagePath) => {
-      if (err) {
-        console.error('Error serving random image:', err);
-        res.status(500).json({ error: `Internal Server Error: ${err}` });
-      } else {
-        res.sendFile(imagePath);
-      }
-    });
+    const imagePath = await getRandomImage(randomDirectory, randomFolder);
+
+    res.sendFile(imagePath);
   } catch (error) {
     console.error('Error serving random image:', error);
     res.status(500).json({ error: `Internal Server Error: ${error.message}` });

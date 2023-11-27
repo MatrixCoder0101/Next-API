@@ -35,7 +35,15 @@ export default async function handler(req, res) {
 
     const imagePath = await getRandomImage(randomDirectory, randomFolder);
 
-    res.sendFile(imagePath);
+    // Read the image file into a buffer
+    const imageBuffer = await fs.readFile(imagePath);
+
+    // Determine content type based on the file extension
+    const contentType = path.extname(imagePath).slice(1);
+
+    // Set content type and send the buffer
+    res.setHeader('Content-Type', `image/${contentType}`);
+    res.status(200).end(imageBuffer, 'binary');
   } catch (error) {
     console.error('Error serving random image:', error);
     res.status(500).json({ error: `Internal Server Error: ${error.message}` });
